@@ -232,7 +232,8 @@ def crawl_data(Lower,upper):
         # time.sleep(100)
         clean_data(response)
 
-def Visualization():
+#绘制条形图
+def Bar_chart():
     df = pd.read_csv("东方财富.csv")
     # if (Order=='1'): Order = True
     # else:Order = False
@@ -267,8 +268,8 @@ def Visualization():
         plt.text(rect_x+width/2, rect_y+0.05, str(rect_y)+'%', ha='center')
     plt.show()
     
-    
-def abc():
+#绘制散点图
+def Scatter_plot():
     df = pd.read_csv("东方财富.csv")
     # 绘制散点图并拟合
     # df_sort = df.sort_values(by='成交量', ascending=False)
@@ -299,6 +300,54 @@ def abc():
     
     # 展示
     plt.show()
+    
+#绘制饼状图
+def Pie_chart():
+    f = []
+    b = 0
+    c = 0
+    e = 0
+    d = 0
+    x = 0
+    df = pd.read_csv("东方财富.csv")
+    
+    randf = df["涨跌幅"]
+    for i in randf:
+        if i == '"-"':
+            x += 1
+        elif float(i) < 0:
+            b += 1
+        elif float(i) >= 0 and float(i) < 1:
+            c += 1
+        elif float(i) >= 1 and float(i) < 5:
+            e += 1
+        elif float(i) >= 5:
+            d += 1
+    
+    
+    f.append(b)
+    f.append(c)
+    f.append(e)
+    f.append(d)
+    f.append(x)
+    # print(f)            
+    
+    
+    
+    plt.style.use('fivethirtyeight')
+
+    Rise_and_fall = ['跌', '涨0%~1%', '涨1%~5%', '涨5%+', '无数据']
+    popularity = [59219, 55466, 47544, 36443, 35917]
+
+    wedges ,text,autotexts =plt.pie(f, labels = Rise_and_fall, autopct='%1.1f%%', 
+            counterclock=False, startangle=90, explode=[0,0,0.1,0,0],
+            colors=("#00ff33","#40E0D0","#FF4040","#FFF68F","#C5C1AA"))
+    
+    plt.legend(wedges,Rise_and_fall,loc="right",bbox_to_anchor=(1,0,0.3,1))
+    
+    plt.title('今日股市情况')
+    plt.tight_layout()
+    plt.show()
 
 if __name__ =='__main__':
     
@@ -319,9 +368,12 @@ if __name__ =='__main__':
     
     # 读取本地CSV
     # df = pd.read_csv("东方财富.csv")
+    # print(df["涨跌幅"])
     
-    # Visualization()
-    abc()
+    # Bar_chart()
+    # Scatter_plot()
+    Pie_chart()
+    
     # 根据涨幅进行排序
     # df_sort = df.sort_values(by='涨跌幅', ascending=False)
     
