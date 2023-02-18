@@ -244,8 +244,10 @@ def Bar_chart():
     fig = plt.figure(figsize=(16,8))
     x = new_df['名称']
     y = new_df['最新价']
+    print(y)
     z = new_df['涨跌幅']
-    plt.title('最新价/涨跌幅')
+    print(z)
+    plt.title('今日涨跌幅最大的十只股票最新价与其涨跌幅')
     plt.xlabel('股票名',size=13)
     plt.ylabel('股价',size=13)
     #plt.zlabel('评价人数')
@@ -272,13 +274,16 @@ def Bar_chart():
 def Scatter_plot():
     df = pd.read_csv("东方财富.csv")
     # 绘制散点图并拟合
-    # df_sort = df.sort_values(by='成交量', ascending=False)
-    # df = df_sort.head(100)
+    df_sort = df.sort_values(by='换手率', ascending=False)
+    df = df_sort.head(60)
     
-    my_y = df['涨跌幅']
+    my_x = df['最新价']
     
-    my_x = df['换手率']
+    my_y = df['换手率']
     
+    my_z = df['涨跌幅']
+    
+    # Rise_and_fall = ['换手率', '涨跌幅']
     
     # 用4次多项式拟合
     # z1 = np.polyfit(my_x, my_y, 4)
@@ -288,15 +293,17 @@ def Scatter_plot():
     # yvals=p1(my_x)
     
     # 绘制散点和曲线
-    plot1=plt.plot(my_x, my_y, '*',label='original values')
-    # plot2=plt.plot(my_x, yvals, 'r',label='polyfit values')
+    plot1=plt.plot(my_x, my_y, '*',label='original values',color = '#00ff33')
+    plot2=plt.plot(my_x, my_z, 'o',label='polyfit values',color = '#FF4040')
+    # plot1=plt.plot(my_x, my_y, '*',label=u'换手率',color = '#00ff33')
+    # plot2=plt.plot(my_x, my_z, 'o',label=u'涨跌幅',color = '#FF4040')
     
     # 图标
-    plt.ylabel('涨跌幅')
-    plt.xlabel('换手率')
-    
+    plt.ylabel('换手率')
+    plt.xlabel('股价')
+    # plt.legend(plot1,Rise_and_fall,loc="right",bbox_to_anchor=(1,0,0.3,1))
     # 标题
-    plt.title('polyfitting')
+    plt.title('股价/换手率(红)/涨跌幅(绿)')
     
     # 展示
     plt.show()
@@ -341,7 +348,7 @@ def Pie_chart():
 
     wedges ,text,autotexts =plt.pie(f, labels = Rise_and_fall, autopct='%1.1f%%', 
             counterclock=False, startangle=90, explode=[0,0,0.1,0,0],
-            colors=("#00ff33","#40E0D0","#FF4040","#FFF68F","#C5C1AA"))
+            colors=("#00ff33","#517eb7","#FF4040","#FFF68F","#C5C1AA"))
     
     plt.legend(wedges,Rise_and_fall,loc="right",bbox_to_anchor=(1,0,0.3,1))
     
@@ -370,9 +377,12 @@ if __name__ =='__main__':
     # df = pd.read_csv("东方财富.csv")
     # print(df["涨跌幅"])
     
+    #条形图
     # Bar_chart()
-    # Scatter_plot()
-    Pie_chart()
+    # 绘制散点图
+    Scatter_plot()
+    #饼状图
+    # Pie_chart()
     
     # 根据涨幅进行排序
     # df_sort = df.sort_values(by='涨跌幅', ascending=False)
